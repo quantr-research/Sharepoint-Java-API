@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.mcheung63</groupId>
-    <artifactId>Sharepoint-Java-API</artifactId>
-    <version>1.0</version>
-    <packaging>jar</packaging>
-<url>http://www.quantr.hk</url>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.mcheung63</groupId>
+	<artifactId>Sharepoint-Java-API</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<url>http://www.quantr.hk</url>
+	<description>Sharepoint Java API Library</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 </project>
