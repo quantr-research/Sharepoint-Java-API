@@ -30,13 +30,93 @@ public class TestSPOnline {
 
 			// get all sites
 			jsonString = SPOnline.get(token, domain, "/_api/web");
-			System.out.println(CommonLib.prettyFormatJson(jsonString));
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
 
-			// add a site
+//			// add a site
 			jsonString = SPOnline.post(token, domain, "/_api/web/webs/add", "{ 'parameters': { '__metadata': { 'type': 'SP.WebCreationInformation' },\n"
 					+ "    'Title': 'Social Meetup', 'Url': 'social', 'WebTemplate': 'MPS#3',\n"
 					+ "    'UseSamePermissionsAsParentSite': true } }", formDigestValue);
-			System.out.println(CommonLib.prettyFormatJson(jsonString));
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// change site description
+			jsonString = SPOnline.post(token, domain, "/social/_api/web", "{ '__metadata': { 'type': 'SP.Web' }, 'Description': 'my testing description',\n"
+					+ "    'EnableMinimalDownload': false }", formDigestValue, true);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// delete a site
+			jsonString = SPOnline.delete(token, domain, "/social/_api/web", formDigestValue);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// get all lists
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// get all lists with tile and guid only
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// get all list by specific ID
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists(guid'8f0cd839-88c1-4fea-ae05-19f7df1f2645')");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// get all list by specific title
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists/GetByTitle('Workflow%20Tasks')");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// create a list called Peter
+			jsonString = SPOnline.post(token, domain, "/_api/web/lists", "{ '__metadata': { 'type': 'SP.List' }, 'AllowContentTypes': true, 'BaseTemplate': 100,\n"
+					+ "    'ContentTypesEnabled': true, 'Description': 'created by SharePoint-Java-API', 'Title': 'Peter' }", formDigestValue);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// change list name from Peter to John
+			jsonString = SPOnline.post(token, domain, "/_api/web/lists/GetByTitle('Peter')", "{ '__metadata': { 'type': 'SP.List' }, 'AllowContentTypes': true, 'BaseTemplate': 100,\n"
+					+ "    'ContentTypesEnabled': true, 'Description': 'new description', 'Title': 'John' }", formDigestValue, true);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// add column to list John, for FieldTypeKind references to https://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.fieldtype.aspx
+			jsonString = SPOnline.post(token, domain, "/_api/web/lists/GetByTitle('John')/Fields", "{ '__metadata': { 'type': 'SP.Field' }, 'FieldTypeKind': 11, 'Title': 'my new column'}", formDigestValue);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+			// insert an item to list John, the list was called Peter by creation, so it is SP.Data.PeterListItem, not SP.Data.JohnListItem
+			jsonString = SPOnline.post(token, domain, "/_api/web/lists/GetByTitle('John')/items", "{ '__metadata': { 'type': 'SP.Data.PeterListItem' },\n"
+					+ "'Title': 'test1', "
+					+ "'my_x0020_new_x0020_column': {'Url': 'http://www.google.com', 'Description': 'Google USA'}}", formDigestValue);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// get list items from list John
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists/GetByTitle('John')/items");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+
+			// delete list john
+			jsonString = SPOnline.delete(token, domain, "/_api/web/lists/GetByTitle('John')", formDigestValue);
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
 		} else {
 			System.err.println("Login failed");
 		}

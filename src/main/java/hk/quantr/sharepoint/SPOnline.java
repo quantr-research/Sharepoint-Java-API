@@ -25,6 +25,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -192,7 +193,7 @@ public class SPOnline {
 	public static String contextinfo(Pair<String, String> token, String domain) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
-			HttpPost getRequest = new HttpPost("https://quantr.sharepoint.com/_api/contextinfo");
+			HttpPost getRequest = new HttpPost("https://" + domain + ".sharepoint.com/_api/contextinfo");
 			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			getRequest.addHeader("accept", "application/json;odata=verbose");
 			HttpResponse response = httpClient.execute(getRequest);
@@ -218,7 +219,7 @@ public class SPOnline {
 	public static String get(Pair<String, String> token, String domain, String path) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
-			HttpGet getRequest = new HttpGet("https://quantr.sharepoint.com/" + path);
+			HttpGet getRequest = new HttpGet("https://" + domain + ".sharepoint.com/" + path);
 			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			getRequest.addHeader("accept", "application/json;odata=verbose");
 			HttpResponse response = httpClient.execute(getRequest);
@@ -242,18 +243,23 @@ public class SPOnline {
 	}
 
 	public static String post(Pair<String, String> token, String domain, String path, String data, String formDigestValue) {
+		return post(token, domain, path, data, formDigestValue, false);
+	}
+
+	public static String post(Pair<String, String> token, String domain, String path, String data, String formDigestValue, boolean isXHttpMerge) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
-			HttpPost postRequest = new HttpPost("https://quantr.sharepoint.com/" + path);
+			HttpPost postRequest = new HttpPost("https://" + domain + ".sharepoint.com/" + path);
 			postRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			postRequest.addHeader("accept", "application/json;odata=verbose");
 			postRequest.addHeader("content-type", "application/json;odata=verbose");
 			postRequest.addHeader("X-RequestDigest", formDigestValue);
+			postRequest.addHeader("IF-MATCH", "*");
+			if (isXHttpMerge) {
+				postRequest.addHeader("X-HTTP-Method", "MERGE");
+			}
 
 			List<NameValuePair> nvps = new ArrayList<>();
-			if (data != null) {
-				System.out.println(CommonLib.prettyFormatJson(data));
-			}
 			if (data != null) {
 				StringEntity input = new StringEntity(data);
 				input.setContentType("application/json");
@@ -261,14 +267,46 @@ public class SPOnline {
 			}
 
 			HttpResponse response = httpClient.execute(postRequest);
-//			if (response.getStatusLine().getStatusCode() == 200) {
-//			} else {
-			if (response.getStatusLine().getStatusCode() != 200) {
+			if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 204) {
 				logger.error("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
 			}
-			return IOUtils.toString(response.getEntity().getContent(), "utf-8");
-//				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-//			}
+			if (response.getEntity() == null || response.getEntity().getContent() == null) {
+				return null;
+			} else {
+				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				httpClient.close();
+			} catch (IOException ex) {
+				Logger.getLogger(SPOnline.class).error(ex);
+			}
+		}
+		return null;
+	}
+
+	public static String delete(Pair<String, String> token, String domain, String path, String formDigestValue) {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		try {
+			HttpDelete deleteRequest = new HttpDelete("https://" + domain + ".sharepoint.com/" + path);
+			deleteRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
+			deleteRequest.addHeader("accept", "application/json;odata=verbose");
+			deleteRequest.addHeader("content-type", "application/json;odata=verbose");
+			deleteRequest.addHeader("X-RequestDigest", formDigestValue);
+			deleteRequest.addHeader("IF-MATCH", "*");
+			HttpResponse response = httpClient.execute(deleteRequest);
+			if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 204) {
+				logger.error("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			}
+			if (response.getEntity() == null || response.getEntity().getContent() == null) {
+				return null;
+			} else {
+				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
+			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
