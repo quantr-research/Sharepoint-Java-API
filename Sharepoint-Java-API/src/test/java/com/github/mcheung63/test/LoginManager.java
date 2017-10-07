@@ -21,7 +21,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -37,13 +39,40 @@ public class LoginManager {
 	private final String loginContextPath = "/_forms/default.aspx?wa=wsignin1.0";
 	private final String sharepointContext = "quantr";
 	private final String reqXML = "<?xml version=\"1.0\" encoding=\"utf-8\" ?><s:Envelope xmlns:s=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:a=\"http://www.w3.org/2005/08/addressing\" xmlns:u=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\"><s:Header><a:Action s:mustUnderstand=\"1\">http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue</a:Action><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><a:To s:mustUnderstand=\"1\">https://login.microsoftonline.com/extSTS.srf</a:To><o:Security s:mustUnderstand=\"1\" xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:UsernameToken><o:Username>[username]</o:Username><o:Password>[password]</o:Password></o:UsernameToken></o:Security></s:Header><s:Body><t:RequestSecurityToken xmlns:t=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"><wsp:AppliesTo xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\"><a:EndpointReference><a:Address>[endpoint]</a:Address></a:EndpointReference></wsp:AppliesTo><t:KeyType>http://schemas.xmlsoap.org/ws/2005/05/identity/NoProofKey</t:KeyType><t:RequestType>http://schemas.xmlsoap.org/ws/2005/02/trust/Issue</t:RequestType><t:TokenType>urn:oasis:names:tc:SAML:1.0:assertion</t:TokenType></t:RequestSecurityToken></s:Body></s:Envelope>";
-	String rtFa;
-	String FedAuth;
+	static String rtFa;
+	static String fedAuth;
 
 	@Test
 	public void test() throws Exception {
-		System.out.println(new LoginManager().login());
+		System.out.println("login final=" + new LoginManager().login());
 
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		try {
+			HttpPost getRequest = new HttpPost("https://quantr.sharepoint.com/_api/contextinfo");
+
+			getRequest.addHeader("Cookie", rtFa + ";" + fedAuth);
+			getRequest.addHeader("accept", "application/json");
+
+			HttpResponse response = httpClient.execute(getRequest);
+
+			if (response.getStatusLine().getStatusCode() == 200) {
+				BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
+				String output;
+				while ((output = br.readLine()) != null) {
+					System.out.println(output);
+				}
+			} else {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			httpClient.close();
+		}
+
+		/*
 		URL u = new URL("https://quantr.sharepoint.com/_api/contextinfo");
 		URLConnection uc = u.openConnection();
 		HttpURLConnection connection = (HttpURLConnection) uc;
@@ -51,21 +80,32 @@ public class LoginManager {
 		connection.setDoInput(true);
 		connection.setRequestMethod("POST");
 		connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		connection.addRequestProperty("Content-Length", "0");
 		connection.addRequestProperty("Cookie", rtFa);
-		System.out.println(rtFa);
-		System.out.println(FedAuth);
+		System.out.println("rtFa2=" + rtFa);
+		System.out.println("FedAuth2=" + FedAuth);
 		connection.addRequestProperty("Cookie", FedAuth);
-		int c;
 		StringBuilder sb = new StringBuilder("");
+
+		InputStream is = null;
+		if (connection.getResponseCode() != 200) {
+			is = connection.getErrorStream();
+		} else {
+			is = connection.getInputStream();
+		}
+		String error = IOUtils.toString(is);
+		System.out.println("error=" + error);
+
 		InputStream in = connection.getInputStream();
+		int c;
 		while ((c = in.read()) != -1) {
 			sb.append((char) (c));
 		}
 		in.close();
 		String result = sb.toString();
-		System.out.println(result);
-		getFolderByServerRelativeUrl(rtFa, FedAuth, "", "");
-
+		System.out.println("contextinfo" + result);
+		 */
+		//getFolderByServerRelativeUrl(rtFa, FedAuth, "", "");
 //		try {
 //			DefaultHttpClient httpClient = new DefaultHttpClient();
 //			HttpPost getRequest = new HttpPost("https://quantr.sharepoint.com/_api/contextinfo");
@@ -102,13 +142,9 @@ public class LoginManager {
 
 		try {
 			HttpGet getRequest = new HttpGet("https://quantr.sharepoint.com/sites/Documents/_api/web/GetFolderByServerRelativeUrl('" + filePath + "')/Files");
-
 			getRequest.addHeader("Cookie", "rtFa=" + rtFa + ";FedAuth=" + fedAuth);
 			getRequest.addHeader("Authorization", "Bearer" + XRequestDigest);
-
-			//Optional header which format response as a JSON object
 			getRequest.addHeader("accept", "application/json");
-
 			HttpResponse response = httpClient.execute(getRequest);
 
 			if (response.getStatusLine().getStatusCode() == 200) {
@@ -122,7 +158,6 @@ public class LoginManager {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ response.getStatusLine().getStatusCode());
 			}
-
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -146,7 +181,7 @@ public class LoginManager {
 	}
 
 	private String generateSAML() {
-		String saml = reqXML.replace("[username]", "peter@1234.hk");
+		String saml = reqXML.replace("[username]", "1234");
 		saml = saml.replace("[password]", "1234");
 		saml = saml.replace("[endpoint]", String.format("https://%s.sharepoint.com/_forms/default.aspx?wa=wsignin1.0", sharepointContext));
 		System.out.println(saml);
@@ -254,11 +289,15 @@ public class LoginManager {
 					rtFa = headerValue;
 				} else if (headerName.equals("Set-Cookie") && headerValue.startsWith("FedAuth=")) {
 					System.out.println("FedAuth=" + headerValue);
-					FedAuth = headerValue;
+					fedAuth = headerValue;
 				}
 			}
 		}
+
+		System.out.println("rtFa1=" + rtFa);
+		System.out.println("FedAuth1=" + fedAuth);
 		String headerName = connection.getHeaderField("Set-Cookie");
+		System.out.println("headerName=" + headerName);
 		int c;
 		StringBuilder sb = new StringBuilder("");
 		while ((c = in.read()) != -1) {
@@ -266,7 +305,7 @@ public class LoginManager {
 		}
 		in.close();
 		String result = sb.toString();
-		System.out.println(result);
+		System.out.println("loginResult=" + result);
 
 		return headerName;
 	}
