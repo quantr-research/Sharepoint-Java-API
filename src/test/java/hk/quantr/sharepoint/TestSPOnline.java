@@ -34,7 +34,7 @@ public class TestSPOnline {
 				System.out.println(CommonLib.prettyFormatJson(jsonString));
 			}
 
-//			// add a site
+			// add a site
 			jsonString = SPOnline.post(token, domain, "/_api/web/webs/add", "{ 'parameters': { '__metadata': { 'type': 'SP.WebCreationInformation' },\n"
 					+ "    'Title': 'Social Meetup', 'Url': 'social', 'WebTemplate': 'MPS#3',\n"
 					+ "    'UseSamePermissionsAsParentSite': true } }", formDigestValue);
