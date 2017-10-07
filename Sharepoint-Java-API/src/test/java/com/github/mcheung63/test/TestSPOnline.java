@@ -19,6 +19,7 @@
 package com.github.mcheung63.test;
 
 import hk.quantr.sharepoint.SPOnline;
+import javax.swing.JOptionPane;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 
@@ -30,8 +31,11 @@ public class TestSPOnline {
 
 	@Test
 	public void test1() {
-		Pair<String, String> pair = SPOnline.login("username", "password", "quantr");
-		System.out.println(pair.getLeft());
-		System.out.println(pair.getRight());
+		String password = JOptionPane.showInputDialog(null, "Please input office365 password");
+		String domain = "quantr";
+		Pair<String, String> token = SPOnline.login("peter@quantr.hk", password, domain);
+		if (token != null) {
+			SPOnline.getWeb(token, domain);
+		}
 	}
 }
