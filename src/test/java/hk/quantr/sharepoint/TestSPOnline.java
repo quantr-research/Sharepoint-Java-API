@@ -2,10 +2,10 @@
 package hk.quantr.sharepoint;
 
 import com.peterswing.CommonLib;
-import hk.quantr.sharepoint.SPOnline;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import org.apache.commons.lang3.tuple.Pair;
+import org.json.JSONObject;
 import org.junit.Test;
 
 /**
@@ -22,8 +22,21 @@ public class TestSPOnline {
 		String domain = "quantr";
 		Pair<String, String> token = SPOnline.login("peter@quantr.hk", password, domain);
 		if (token != null) {
-			String json = SPOnline.web(token, domain);
-			System.out.println(CommonLib.prettyFormatJson(json));
+			String jsonString = SPOnline.post(token, domain, "/_api/contextinfo", null, null);
+			System.out.println(CommonLib.prettyFormatJson(jsonString));
+			JSONObject json = new JSONObject(jsonString);
+			String formDigestValue = json.getJSONObject("d").getJSONObject("GetContextWebInformation").getString("FormDigestValue");
+			System.out.println("FormDigestValue=" + formDigestValue);
+
+			// get all sites
+			jsonString = SPOnline.get(token, domain, "/_api/web");
+			System.out.println(CommonLib.prettyFormatJson(jsonString));
+
+			// add a site
+			jsonString = SPOnline.post(token, domain, "/_api/web/webs/add", "{ 'parameters': { '__metadata': { 'type': 'SP.WebCreationInformation' },\n"
+					+ "    'Title': 'Social Meetup', 'Url': 'social', 'WebTemplate': 'MPS#3',\n"
+					+ "    'UseSamePermissionsAsParentSite': true } }", formDigestValue);
+			System.out.println(CommonLib.prettyFormatJson(jsonString));
 		} else {
 			System.err.println("Login failed");
 		}

@@ -11,6 +11,8 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,9 +23,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
@@ -174,19 +178,14 @@ public class SPOnline {
 		}
 
 		Pair<String, String> result = ImmutablePair.of(rtFa, fedAuth);
-
-//		System.out.println("rtFa1=" + rtFa);
-//		System.out.println("FedAuth1=" + fedAuth);
-//		String headerName = connection.getHeaderField("Set-Cookie");
-//		System.out.println("headerName=" + headerName);
 //		int c;
 //		StringBuilder sb = new StringBuilder("");
 //		while ((c = in.read()) != -1) {
 //			sb.append((char) (c));
 //		}
 //		in.close();
-//		String result = sb.toString();
-//		System.out.println("loginResult=" + result);
+//		String s = sb.toString();
+//		System.out.println("loginResult=" + s);
 		return result;
 	}
 
@@ -215,10 +214,11 @@ public class SPOnline {
 		}
 		return null;
 	}
-	public static String web(Pair<String, String> token, String domain) {
+
+	public static String get(Pair<String, String> token, String domain, String path) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
-			HttpGet getRequest = new HttpGet("https://quantr.sharepoint.com/_api/web");
+			HttpGet getRequest = new HttpGet("https://quantr.sharepoint.com/" + path);
 			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			getRequest.addHeader("accept", "application/json;odata=verbose");
 			HttpResponse response = httpClient.execute(getRequest);
@@ -227,6 +227,48 @@ public class SPOnline {
 			} else {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
 			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				httpClient.close();
+			} catch (IOException ex) {
+				Logger.getLogger(SPOnline.class).error(ex);
+			}
+		}
+		return null;
+	}
+
+	public static String post(Pair<String, String> token, String domain, String path, String data, String formDigestValue) {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		try {
+			HttpPost postRequest = new HttpPost("https://quantr.sharepoint.com/" + path);
+			postRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
+			postRequest.addHeader("accept", "application/json;odata=verbose");
+			postRequest.addHeader("content-type", "application/json;odata=verbose");
+			postRequest.addHeader("X-RequestDigest", formDigestValue);
+
+			List<NameValuePair> nvps = new ArrayList<>();
+			if (data != null) {
+				System.out.println(CommonLib.prettyFormatJson(data));
+			}
+			if (data != null) {
+				StringEntity input = new StringEntity(data);
+				input.setContentType("application/json");
+				postRequest.setEntity(input);
+			}
+
+			HttpResponse response = httpClient.execute(postRequest);
+//			if (response.getStatusLine().getStatusCode() == 200) {
+//			} else {
+			if (response.getStatusLine().getStatusCode() != 200) {
+				logger.error("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			}
+			return IOUtils.toString(response.getEntity().getContent(), "utf-8");
+//				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+//			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
