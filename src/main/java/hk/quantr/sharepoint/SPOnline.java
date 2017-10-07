@@ -1,28 +1,9 @@
-/*
- * Copyright (C) 2017 Peter <mcheung63@hotmail.com>.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+// License : Apache License Version 2.0  https://www.apache.org/licenses/LICENSE-2.0
 package hk.quantr.sharepoint;
 
 import com.peterswing.CommonLib;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -36,10 +17,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -100,7 +83,7 @@ public class SPOnline {
 		String result = sb.toString();
 		String token = extractToken(result);
 		if (token == null || token.equals("")) {
-			logger.error("Login failed : " + CommonLib.prettyFormat(result, 4));
+			logger.error("Login failed : " + CommonLib.prettyFormatXml(result, 4));
 			return null;
 		}
 		return token;
@@ -157,7 +140,6 @@ public class SPOnline {
 		URL u = new URL(url);
 		URLConnection uc = u.openConnection();
 		HttpURLConnection connection = (HttpURLConnection) uc;
-
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
 		connection.setRequestMethod("POST");
@@ -208,23 +190,15 @@ public class SPOnline {
 		return result;
 	}
 
-	public static void getWeb(Pair<String, String> token, String domain) {
+	public static String contextinfo(Pair<String, String> token, String domain) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
 			HttpPost getRequest = new HttpPost("https://quantr.sharepoint.com/_api/contextinfo");
-			System.out.println(token.getLeft());
-			System.out.println(token.getRight());
 			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			getRequest.addHeader("accept", "application/json;odata=verbose");
-
 			HttpResponse response = httpClient.execute(getRequest);
-
 			if (response.getStatusLine().getStatusCode() == 200) {
-				BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-				String output;
-				while ((output = br.readLine()) != null) {
-					System.out.println(output);
-				}
+				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
 			} else {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
 			}
@@ -239,7 +213,31 @@ public class SPOnline {
 				Logger.getLogger(SPOnline.class).error(ex);
 			}
 		}
-
+		return null;
 	}
-
+	public static String web(Pair<String, String> token, String domain) {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		try {
+			HttpGet getRequest = new HttpGet("https://quantr.sharepoint.com/_api/web");
+			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
+			getRequest.addHeader("accept", "application/json;odata=verbose");
+			HttpResponse response = httpClient.execute(getRequest);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
+			} else {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				httpClient.close();
+			} catch (IOException ex) {
+				Logger.getLogger(SPOnline.class).error(ex);
+			}
+		}
+		return null;
+	}
 }
