@@ -2,7 +2,6 @@
 This library is calling SharePoint restful API https://msdn.microsoft.com/en-us/library/office/dn499819.aspx
 
 # Example
-
 ```
 		String password = "your password";
 		String domain = "quantr";   //  http://quantr.sharepoint.com
