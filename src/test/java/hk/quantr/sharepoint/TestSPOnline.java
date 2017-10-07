@@ -24,6 +24,8 @@ public class TestSPOnline {
 		if (token != null) {
 			String json = SPOnline.web(token, domain);
 			System.out.println(CommonLib.prettyFormatJson(json));
+		} else {
+			System.err.println("Login failed");
 		}
 	}
 }
