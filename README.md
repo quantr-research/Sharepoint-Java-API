@@ -9,3 +9,15 @@ We are quantr development team, we are a sharepoint dev company http://www.quant
 
 # Example
 https://github.com/quantr-research/Sharepoint-Java-API/blob/master/src/test/java/hk/quantr/sharepoint/TestSPOnline.java
+
+# Compile
+
+This library rely on peter-swing library https://github.com/mcheung63/peter-swing
+
+1. git clone https://github.com/mcheung63/peter-swing.git
+2. cd peter-swing
+3. mvn clean install
+4. cd ..
+5. cd Sharepoint-Java-API
+6. mvn clean package
+7. The compiled jar file is in target folder, you can use it in your project now
