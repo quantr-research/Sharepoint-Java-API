@@ -49,6 +49,7 @@ public class SPOnline {
 		String token;
 		try {
 			token = requestToken(domain, username, password);
+			logger.info("token=" + token);
 			if (token == null) {
 				return null;
 			}
@@ -177,6 +178,9 @@ public class SPOnline {
 				}
 			}
 		}
+
+		logger.info("rtFa=" + token);
+		logger.info("fedAuth=" + token);
 
 		Pair<String, String> result = ImmutablePair.of(rtFa, fedAuth);
 //		int c;
