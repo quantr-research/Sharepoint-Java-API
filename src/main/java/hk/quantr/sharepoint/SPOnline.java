@@ -55,10 +55,7 @@ public class SPOnline {
 			if (token == null) {
 				return null;
 			}
-			logger.info("token=" + token);
 			result = submitToken(domain, token);
-			logger.info("1>" + result.getLeft());
-			logger.info("1>" + result.getRight());
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,9 +145,9 @@ public class SPOnline {
 	private static Pair<String, String> submitToken(String domain, String token) throws IOException {
 		String loginContextPath = "/_forms/default.aspx?wa=wsignin1.0";
 		String url = String.format("https://%s.sharepoint.com%s", domain, loginContextPath);
-		logger.info("url=" + url);
-		logger.info("token2=" + token);
-		logger.info("java.version=" + System.getProperty("java.version"));
+//		logger.info("url=" + url);
+//		logger.info("token2=" + token);
+//		logger.info("java.version=" + System.getProperty("java.version"));
 		CookieHandler.setDefault(null);
 		URL u = new URL(url);
 		URLConnection uc = u.openConnection();
@@ -164,7 +161,6 @@ public class SPOnline {
 		connection.setInstanceFollowRedirects(false);
 		OutputStream out = connection.getOutputStream();
 		Writer writer = new OutputStreamWriter(out);
-		logger.info("token3=" + token);
 		writer.write(token);
 		writer.flush();
 		out.flush();
@@ -177,42 +173,39 @@ public class SPOnline {
 		List<String> cookiesHeader = headerFields.get("Set-Cookie");
 		if (cookiesHeader != null) {
 			for (String cookie : cookiesHeader) {
-				logger.info("c=" + cookie);
 				if (cookie.startsWith("rtFa=")) {
 					rtFa = "rtFa=" + HttpCookie.parse(cookie).get(0).getValue();
 				} else if (cookie.startsWith("FedAuth=")) {
 					fedAuth = "FedAuth=" + HttpCookie.parse(cookie).get(0).getValue();
 				} else {
-					logger.info("waste=" + HttpCookie.parse(cookie).get(0).getValue());
+					//logger.info("waste=" + HttpCookie.parse(cookie).get(0).getValue());
 				}
 			}
 		}
-
-//		InputStream in = connection.getInputStream();
-//		for (int i = 0;; i++) {
-//			String headerName = connection.getHeaderFieldKey(i);
-//			String headerValue = connection.getHeaderField(i);
-//			System.out.println("\t\theaderName=" + headerName + "=" + headerValue);
-//			if (headerName == null && headerValue == null) {
-//				break;
-//			}
-//			if (headerName == null) {
-//			} else {
-//				if (headerName.equals("Set-Cookie") && headerValue.startsWith("rtFa=")) {
-//					rtFa = headerValue;
-//				} else if (headerName.equals("Set-Cookie") && headerValue.startsWith("FedAuth=")) {
-//					fedAuth = headerValue;
-//				}
-//			}
-//		}
-		logger.info("rtFa=" + rtFa);
-		logger.info("fedAuth=" + fedAuth);
+		/*
+		InputStream in = connection.getInputStream();
+		for (int i = 0;; i++) {
+			String headerName = connection.getHeaderFieldKey(i);
+			String headerValue = connection.getHeaderField(i);
+			System.out.println("\t\theaderName=" + headerName + "=" + headerValue);
+			if (headerName == null && headerValue == null) {
+				break;
+			}
+			if (headerName == null) {
+			} else {
+				if (headerName.equals("Set-Cookie") && headerValue.startsWith("rtFa=")) {
+					rtFa = headerValue;
+				} else if (headerName.equals("Set-Cookie") && headerValue.startsWith("FedAuth=")) {
+					fedAuth = headerValue;
+				}
+			}
+		}
+		 */
+//		logger.info("rtFa=" + rtFa);
+//		logger.info("fedAuth=" + fedAuth);
 
 		Pair<String, String> result = ImmutablePair.of(rtFa, fedAuth);
 //		System.out.println("loginResult=" + IOUtils.toString(in, "utf-8"));
-
-		logger.info("3=" + result.getLeft());
-		logger.info("3=" + result.getRight());
 
 		return result;
 	}
