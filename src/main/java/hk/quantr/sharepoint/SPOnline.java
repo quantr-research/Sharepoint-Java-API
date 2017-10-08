@@ -49,11 +49,13 @@ public class SPOnline {
 		String token;
 		try {
 			token = requestToken(domain, username, password);
-			logger.info("token=" + token);
 			if (token == null) {
 				return null;
 			}
+			System.out.println("token=" + token);
 			result = submitToken(domain, token);
+			System.out.println("1>" + result.getLeft());
+			System.out.println("1>" + result.getRight());
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,6 +145,9 @@ public class SPOnline {
 	private static Pair<String, String> submitToken(String domain, String token) throws IOException {
 		String loginContextPath = "/_forms/default.aspx?wa=wsignin1.0";
 		String url = String.format("https://%s.sharepoint.com%s", domain, loginContextPath);
+		System.out.println("url=" + url);
+		System.out.println("token2=" + token);
+		System.out.println("java.version=" + System.getProperty("java.version"));
 		URL u = new URL(url);
 		URLConnection uc = u.openConnection();
 		HttpURLConnection connection = (HttpURLConnection) uc;
@@ -150,13 +155,15 @@ public class SPOnline {
 		connection.setDoInput(true);
 		connection.setRequestMethod("POST");
 		connection.addRequestProperty("Accept", "application/x-www-form-urlencoded");
-		connection.addRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)");
+		//connection.addRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)");
 		connection.addRequestProperty("Content-Type", "text/xml; charset=utf-8");
 		connection.setInstanceFollowRedirects(false);
 		OutputStream out = connection.getOutputStream();
 		Writer writer = new OutputStreamWriter(out);
+		System.out.println("token3=" + token);
 		writer.write(token);
 		writer.flush();
+		out.flush();
 		writer.close();
 		out.close();
 
@@ -166,6 +173,7 @@ public class SPOnline {
 		for (int i = 0;; i++) {
 			String headerName = connection.getHeaderFieldKey(i);
 			String headerValue = connection.getHeaderField(i);
+			System.out.println("\t\theaderName=" + headerName + "=" + headerValue);
 			if (headerName == null && headerValue == null) {
 				break;
 			}
@@ -179,18 +187,15 @@ public class SPOnline {
 			}
 		}
 
-		logger.info("rtFa=" + token);
-		logger.info("fedAuth=" + token);
+		logger.info("rtFa=" + rtFa);
+		logger.info("fedAuth=" + fedAuth);
 
 		Pair<String, String> result = ImmutablePair.of(rtFa, fedAuth);
-//		int c;
-//		StringBuilder sb = new StringBuilder("");
-//		while ((c = in.read()) != -1) {
-//			sb.append((char) (c));
-//		}
-//		in.close();
-//		String s = sb.toString();
-//		System.out.println("loginResult=" + s);
+//		System.out.println("loginResult=" + IOUtils.toString(in, "utf-8"));
+
+		logger.info("3=" + result.getLeft());
+		logger.info("3=" + result.getRight());
+
 		return result;
 	}
 
