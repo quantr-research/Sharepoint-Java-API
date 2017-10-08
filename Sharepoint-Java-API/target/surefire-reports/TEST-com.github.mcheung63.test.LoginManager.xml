@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="1" failures="0" name="com.github.mcheung63.test.LoginManager" time="1.386" errors="1" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib"/>
+    <property name="java.vm.version" value="25.121-b13"/>
+    <property name="user.country.format" value="HK"/>
+    <property name="gopherProxySet" value="false"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/peter/workspace/Sharepoint-Java-API/Sharepoint-Java-API"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="test" value="com.github.mcheung63.test.LoginManager"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/Users/peter/workspace/Sharepoint-Java-API/Sharepoint-Java-API"/>
+    <property name="java.runtime.version" value="1.8.0_121-b13"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/endorsed"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="java.io.tmpdir" value="/var/folders/nm/p4l7xlw97gvd9wyyb1w5yz_80000gn/T/"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="maven.ext.class.path" value="/Applications/NetBeans/NetBeans 8.2.app/Contents/Resources/NetBeans/java/maven-nblib/netbeans-eventspy.jar"/>
+    <property name="classworlds.conf" value="/Users/peter/Downloads/apache-maven-3.5.0/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/peter/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="maven.conf" value="/Users/peter/Downloads/apache-maven-3.5.0/conf"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.12.6"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="library.jansi.path" value="/Users/peter/Downloads/apache-maven-3.5.0/lib/jansi-native/osx64"/>
+    <property name="user.home" value="/Users/peter"/>
+    <property name="user.timezone" value="Asia/Hong_Kong"/>
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="current.jrebel.agent.path" value="/var/folders/nm/p4l7xlw97gvd9wyyb1w5yz_80000gn/T/.jr15EF134DFF6/jrebel.jar"/>
+    <property name="user.name" value="peter"/>
+    <property name="java.class.path" value="/Users/peter/Downloads/apache-maven-3.5.0/boot/plexus-classworlds-2.5.2.jar"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=com.github.mcheung63.test.LoginManager -Dmaven.ext.class.path=/Applications/NetBeans/NetBeans 8.2.app/Contents/Resources/NetBeans/java/maven-nblib/netbeans-eventspy.jar surefire:test -Dcurrent.jrebel.agent.path=/var/folders/nm/p4l7xlw97gvd9wyyb1w5yz_80000gn/T/.jr15EF134DFF6/jrebel.jar"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_121"/>
+    <property name="java.ext.dirs" value="/Users/peter/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="/Users/peter/Downloads/apache-maven-3.5.0"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase classname="com.github.mcheung63.test.LoginManager" name="test" time="1.386">
+    <error message="Server returned HTTP response code: 400 for URL: https://quantr.sharepoint.com/_api/contextinfo" type="java.io.IOException">java.io.IOException: Server returned HTTP response code: 400 for URL: https://quantr.sharepoint.com/_api/contextinfo
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1876)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1474)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:254)
+	at com.github.mcheung63.test.LoginManager.test(LoginManager.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+</error>
+    <system-out>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;&lt;s:Envelope xmlns:s=&quot;http://www.w3.org/2003/05/soap-envelope&quot; xmlns:a=&quot;http://www.w3.org/2005/08/addressing&quot; xmlns:u=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&quot;&gt;&lt;s:Header&gt;&lt;a:Action s:mustUnderstand=&quot;1&quot;&gt;http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue&lt;/a:Action&gt;&lt;a:ReplyTo&gt;&lt;a:Address&gt;http://www.w3.org/2005/08/addressing/anonymous&lt;/a:Address&gt;&lt;/a:ReplyTo&gt;&lt;a:To s:mustUnderstand=&quot;1&quot;&gt;https://login.microsoftonline.com/extSTS.srf&lt;/a:To&gt;&lt;o:Security s:mustUnderstand=&quot;1&quot; xmlns:o=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot;&gt;&lt;o:UsernameToken&gt;&lt;o:Username&gt;peter@quantr.hk&lt;/o:Username&gt;&lt;o:Password&gt;ppffrmit1q!@#&lt;/o:Password&gt;&lt;/o:UsernameToken&gt;&lt;/o:Security&gt;&lt;/s:Header&gt;&lt;s:Body&gt;&lt;t:RequestSecurityToken xmlns:t=&quot;http://schemas.xmlsoap.org/ws/2005/02/trust&quot;&gt;&lt;wsp:AppliesTo xmlns:wsp=&quot;http://schemas.xmlsoap.org/ws/2004/09/policy&quot;&gt;&lt;a:EndpointReference&gt;&lt;a:Address&gt;https://quantr.sharepoint.com/_forms/default.aspx?wa=wsignin1.0&lt;/a:Address&gt;&lt;/a:EndpointReference&gt;&lt;/wsp:AppliesTo&gt;&lt;t:KeyType&gt;http://schemas.xmlsoap.org/ws/2005/05/identity/NoProofKey&lt;/t:KeyType&gt;&lt;t:RequestType&gt;http://schemas.xmlsoap.org/ws/2005/02/trust/Issue&lt;/t:RequestType&gt;&lt;t:TokenType&gt;urn:oasis:names:tc:SAML:1.0:assertion&lt;/t:TokenType&gt;&lt;/t:RequestSecurityToken&gt;&lt;/s:Body&gt;&lt;/s:Envelope&gt;
+token &gt; t=EwAgA06hBwAUamW55wMmWmxpdUrikyyDcCuRBpIAAQQddIG8Zr0KStoqNUFUxvW26I7F8+YfYSxaQDTQbiZ5HbxQ+Uup0fcb17c+HZKehlNNezykvmEULkxoLuqWAkmv0gzJtCQ8sGQVy4a4DlKfk3T6SPpkvIi4tdu9DQXIfUUL96Uuoaz87hzcN9B9enxuyZjzz8YLp+nb2vKV7rubxAu06KVhvGEr61GWNMzmLzfBRh/QD50xXXoYwNxx/3NrjnZZQCSOwbHkdC2wWVFshZDaiBVpDlwu1mTPXXbrH6B4LhgEVKd+3fXf7T/HuyaY64e0rVbleX6ernCW5Dj1/3O4+fiBMe3u1jIfjlF+XwK7FteBvELMBO764ELp9TgDZgAACN1QQ1e+F1xZ8AGtCwVY9JW/GBA0PR4ziR0t0Qm4E93HYNEpKE2TrHCO5nKhxXMkKmBkeirF8PjIAvLTJoK/wNfhJuHuNAgeKngQMZsqMZclnZTox2ne6E3r7W8D4WFCeOiWVIBctg96ZLjoeoiCRuSKBjtkyxrWOICaipte5AV2UB3xnXMyMd8H5AWrOFjLkxJJlBoQT7Rp6kPyVwkVdNZLk8jjR2f0IhB0vWS5rwkXkd/jHNBJn3g91z6UrmrFCgJu/+nJM+02d3RnokNdoV+34cvcTvIMqQhPBmdkVdpIlqRcrht34nJw7XhKoq6aC2X+UphiU81waD9LIkSDiIs4Sz0+Qw+9mv1eo0p4S7/Fbdkh/4zuhXH8LvqT4beUp2MNfHuPbiX79gBDMARPbGuceRAF1hKybbDPN+0WlT8dt0E3GszjaePNnUPeSoN6S+KHSFyVPTbTIGeOOtPemTeuXplGERnTTa6ubTo9HXE8vFhZYm+w5rq5rwwnc3QvDjo6ZsGCSO1Ldccp/9D6sr8W48Lfi9syjQMISg18tbnTgxUi2qPlvIPlMwzmA1EKyt47kh3Zd8BZdhlqyb1yY0Gu8WhOucLi4GewRmnDXkU9P+xg6FAQg8f+7Y/my3u+1A1FBuImotZMN82cV/V0FPWXKn2Tuo3yrmzgPgI=&amp;p=
+rtFa=rtFa=B7ljyIrY19cObGG1dBfaHAsvaty7FGtjoD2cJC435SkCuoxnIBgpeyE/XnQU6UG40/y2t3ZASF4FLajTGP8ivWImY+cv+mPpBqUjiN19pYe07wyK2lVn9e30CnocJwRcjfzYJkWNPbsG2cTFTWIyJILVjXqyZvxGCdxhJ5jTsZ/aUgkV8DQSvtaadvk7xYur/OqGaxN+7NOwrhFmjsMp0nFbUNUsZ43tPuWMwjELWhAGefRob+BJKGBrrgkmLur2JP+5rvJFBPBDTSaxrYATmbsxPzccQ6QImInyXNWokzzVr1ZKTZTcdoMVmllgR87Dwl2hTqBFCj2vC+tBloOQIGug42KD+p/xuXbBp2sOtCe3/cXNWTI6sY56CzmQZttYIAAAAA==; domain=sharepoint.com; path=/; secure; HttpOnly
+FedAuth=FedAuth=77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48U1A+VjMsMGguZnxtZW1iZXJzaGlwfDEwMDM3ZmZlYTA5YjY4NWRAbGl2ZS5jb20sMCMuZnxtZW1iZXJzaGlwfHBldGVyQHF1YW50ci5oaywxMzE1MTc4NDg1MzAwMDAwMDAsMTMxNDgwNjg3ODQwMDAwMDAwLDEzMTUyMjE2ODUzODYwNzg2NSwwLjAuMC4wLDIsMDRmYzk2NzQtODNiZC00MTI4LWJhNDItOGUzNDI0ZmY4OTIxLCwsZDU0ZTIwOWUtOTAwYS00MDAwLTc4Y2ItOGEwZTZiMDgxYzNkLGQ1NGUyMDllLTkwMGEtNDAwMC03OGNiLThhMGU2YjA4MWMzZCwsMCxQSXkxbnY3dUdOMkRRV1NZTno5OVFiT3A0M2p3a0JycVBHRHhFZ1ZtaHFKeThTcUQvajlUaGFFRUlibGdTSlgrWTE1TEIyb2VseTE2N3lNYnVKU002aHVMRnRYeDhEc1FEZDVrV0I3NDByZDJqay9kL3ZyczhnaWNHNkd3c0gxSnovbTZjaE0xWVg1MDFtWkt4eWoxOUZVenRwUmtlcStNL2lWeUdFbHZ2WDJxSlhha0NNTFlVN3Y0U28yNjA1d2xKd2pKNHNRNE1LNkVmTEc0bUw0NlI4L2phM3JNOE9RMlptcmhSbm42eWlhZlNYTUxLemQrVVYwM1IyWEtGc1JTU3FkcWNReTlpK2s2elluUHdJVldabEpBTTAvd2xQbTFtSkhGREFjdVpSU0ZXVUR6MDJvQ2tTQngxajBJUVd1QjI3ckMzN1RrL08yZm1nMnVLbkRabUE9PTwvU1A+; path=/; secure; HttpOnly
+&lt;html&gt;&lt;head&gt;&lt;title&gt;Object moved&lt;/title&gt;&lt;/head&gt;&lt;body&gt;
+&lt;h2&gt;Object moved to &lt;a href=&quot;/&quot;&gt;here&lt;/a&gt;.&lt;/h2&gt;
+&lt;/body&gt;&lt;/html&gt;
+
+RpsContextCookie=; path=/
+null
+null
+</system-out>
+  </testcase>
+</testsuite>
