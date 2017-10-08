@@ -2,8 +2,14 @@
 package hk.quantr.sharepoint;
 
 import com.peterswing.CommonLib;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -16,36 +22,34 @@ public class TestSPOnline {
 
 	@Test
 	public void test1() {
-		JPasswordField pwd = new JPasswordField(10);
-		int action = JOptionPane.showConfirmDialog(null, pwd, "Please input office365 password", JOptionPane.OK_CANCEL_OPTION);
-		String password = new String(pwd.getPassword());
-		String domain = "quantr";
-		Pair<String, String> token = SPOnline.login("peter@quantr.hk", password, domain);
-		if (token != null) {
-			String jsonString = SPOnline.post(token, domain, "/_api/contextinfo", null, null);
-			System.out.println(CommonLib.prettyFormatJson(jsonString));
-			JSONObject json = new JSONObject(jsonString);
-			String formDigestValue = json.getJSONObject("d").getJSONObject("GetContextWebInformation").getString("FormDigestValue");
-			System.out.println("FormDigestValue=" + formDigestValue);
+		try {
+			List<String> lines = IOUtils.readLines(new FileReader(System.getProperty("user.home") + File.separator + "password.txt"));
+			String password = lines.get(0);
+			String domain = "quantr";
+			Pair<String, String> token = SPOnline.login("guest1@quantr.hk", password, domain);
+			if (token != null) {
+				String jsonString = SPOnline.post(token, domain, "/_api/contextinfo", null, null);
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+				JSONObject json = new JSONObject(jsonString);
+				String formDigestValue = json.getJSONObject("d").getJSONObject("GetContextWebInformation").getString("FormDigestValue");
+				System.out.println("FormDigestValue=" + formDigestValue);
 
 //			// get all webs
 //			jsonString = SPOnline.get(token, domain, "/_api/web/webs");
 //			if (jsonString != null) {
 //				System.out.println(CommonLib.prettyFormatJson(jsonString));
 //			}
-
-			// get all site collections
-			jsonString = SPOnline.get(token, domain, "/_api/search/query?querytext='contentclass:sts_site'");
-			if (jsonString != null) {
-				System.out.println(CommonLib.prettyFormatJson(jsonString));
-			}
+// get all site collections
+				jsonString = SPOnline.get(token, domain, "/_api/search/query?querytext='contentclass:sts_site'");
+				if (jsonString != null) {
+					System.out.println(CommonLib.prettyFormatJson(jsonString));
+				}
 
 //			// get all sites
 //			jsonString = SPOnline.get(token, domain, "/_api/site");
 //			if (jsonString != null) {
 //				System.out.println(CommonLib.prettyFormatJson(jsonString));
 //			}
-
 //			// add a site
 //			jsonString = SPOnline.post(token, domain, "/_api/web/webs/add", "{ 'parameters': { '__metadata': { 'type': 'SP.WebCreationInformation' },\n"
 //					+ "    'Title': 'Social Meetup', 'Url': 'social', 'WebTemplate': 'MPS#3',\n"
@@ -129,8 +133,13 @@ public class TestSPOnline {
 //			if (jsonString != null) {
 //				System.out.println(CommonLib.prettyFormatJson(jsonString));
 //			}
-		} else {
-			System.err.println("Login failed");
+			} else {
+				System.err.println("Login failed");
+			}
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(TestSPOnline.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(TestSPOnline.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 }
