@@ -40,10 +40,10 @@ public class TestSPOnline {
 //				System.out.println(CommonLib.prettyFormatJson(jsonString));
 //			}
 // get all site collections
-				jsonString = SPOnline.get(token, domain, "/_api/search/query?querytext='contentclass:sts_site'");
-				if (jsonString != null) {
-					System.out.println(CommonLib.prettyFormatJson(jsonString));
-				}
+//				jsonString = SPOnline.get(token, domain, "/_api/search/query?querytext='contentclass:sts_site'");
+//				if (jsonString != null) {
+//					System.out.println(CommonLib.prettyFormatJson(jsonString));
+//				}
 
 //			// get all sites
 //			jsonString = SPOnline.get(token, domain, "/_api/site");
@@ -72,10 +72,16 @@ public class TestSPOnline {
 //			}
 //
 //			// get all lists
-//			jsonString = SPOnline.get(token, domain, "/_api/web/lists");
-//			if (jsonString != null) {
-//				System.out.println(CommonLib.prettyFormatJson(jsonString));
-//			}
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
+			
+			// get all lists
+			jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");
+			if (jsonString != null) {
+				System.out.println(CommonLib.prettyFormatJson(jsonString));
+			}
 //
 //			// get all lists with tile and guid only
 //			jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");
