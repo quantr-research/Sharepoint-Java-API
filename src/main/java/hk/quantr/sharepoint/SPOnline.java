@@ -23,6 +23,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpResponse;
@@ -48,6 +49,8 @@ public class SPOnline {
 	final static Logger logger = Logger.getLogger(SPOnline.class);
 
 	public static Pair<String, String> login(String username, String password, String domain) {
+		username = StringEscapeUtils.escapeXml(username);
+		password = StringEscapeUtils.escapeXml(password);
 		Pair<String, String> result;
 		String token;
 		try {
@@ -65,6 +68,7 @@ public class SPOnline {
 
 	private static String requestToken(String domain, String username, String password) throws XPathExpressionException, SAXException, ParserConfigurationException, IOException {
 		String saml = generateSAML(domain, username, password);
+		logger.info(saml);
 		String sts = "https://login.microsoftonline.com/extSTS.srf";
 		URL u = new URL(sts);
 		URLConnection uc = u.openConnection();

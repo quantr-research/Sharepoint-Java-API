@@ -26,7 +26,7 @@ public class TestSPOnline {
 			List<String> lines = IOUtils.readLines(new FileReader(System.getProperty("user.home") + File.separator + "password.txt"));
 			String password = lines.get(0);
 			String domain = "quantr";
-			Pair<String, String> token = SPOnline.login("guest1@quantr.hk", password, domain);
+			Pair<String, String> token = SPOnline.login("guest3@quantr.hk", password, domain);
 			if (token != null) {
 				String jsonString = SPOnline.post(token, domain, "/_api/contextinfo", null, null);
 				System.out.println(CommonLib.prettyFormatJson(jsonString));
