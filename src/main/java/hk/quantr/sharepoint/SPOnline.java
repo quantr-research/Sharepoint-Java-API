@@ -68,7 +68,6 @@ public class SPOnline {
 
 	private static String requestToken(String domain, String username, String password) throws XPathExpressionException, SAXException, ParserConfigurationException, IOException {
 		String saml = generateSAML(domain, username, password);
-		logger.info(saml);
 		String sts = "https://login.microsoftonline.com/extSTS.srf";
 		URL u = new URL(sts);
 		URLConnection uc = u.openConnection();
