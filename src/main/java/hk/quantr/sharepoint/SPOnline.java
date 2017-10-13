@@ -49,8 +49,8 @@ public class SPOnline {
 	final static Logger logger = Logger.getLogger(SPOnline.class);
 
 	public static Pair<String, String> login(String username, String password, String domain) {
-		username = StringEscapeUtils.escapeXml(username);
-		password = StringEscapeUtils.escapeXml(password);
+		username = StringEscapeUtils.escapeXml11(username);
+		password = StringEscapeUtils.escapeXml11(password);
 		Pair<String, String> result;
 		String token;
 		try {
