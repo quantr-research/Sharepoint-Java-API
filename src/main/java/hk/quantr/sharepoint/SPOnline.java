@@ -249,7 +249,8 @@ public class SPOnline {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
 			} else {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+				System.err.println("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+				return null;
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
