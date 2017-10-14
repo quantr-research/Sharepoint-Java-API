@@ -286,7 +286,7 @@ public class SPOnline {
 
 			List<NameValuePair> nvps = new ArrayList<>();
 			if (data != null) {
-				StringEntity input = new StringEntity(data);
+				StringEntity input = new StringEntity(data, "UTF-8");
 				input.setContentType("application/json");
 				postRequest.setEntity(input);
 			}
