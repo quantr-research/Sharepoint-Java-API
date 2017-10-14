@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +45,6 @@ public class TestSPOnline {
 //				if (jsonString != null) {
 //					System.out.println(CommonLib.prettyFormatJson(jsonString));
 //				}
-
 //			// get all sites
 //			jsonString = SPOnline.get(token, domain, "/_api/site");
 //			if (jsonString != null) {
@@ -72,16 +72,16 @@ public class TestSPOnline {
 //			}
 //
 //			// get all lists
-			jsonString = SPOnline.get(token, domain, "/_api/web/lists");
-			if (jsonString != null) {
-				System.out.println(CommonLib.prettyFormatJson(jsonString));
-			}
-			
-			// get all lists
-			jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");
-			if (jsonString != null) {
-				System.out.println(CommonLib.prettyFormatJson(jsonString));
-			}
+				jsonString = SPOnline.get(token, domain, "/_api/web/lists");
+				if (jsonString != null) {
+					System.out.println(CommonLib.prettyFormatJson(jsonString));
+				}
+
+				// get all lists
+				jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");
+				if (jsonString != null) {
+					System.out.println(CommonLib.prettyFormatJson(jsonString));
+				}
 //
 //			// get all lists with tile and guid only
 //			jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");

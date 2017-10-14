@@ -13,6 +13,7 @@ import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -249,7 +250,7 @@ public class SPOnline {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
 			} else {
-				System.err.println("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+				System.err.println("Failed : HTTP error code : " + response.getStatusLine().getStatusCode() + ", " + path);
 				return null;
 			}
 		} catch (ClientProtocolException e) {
@@ -292,7 +293,7 @@ public class SPOnline {
 
 			HttpResponse response = httpClient.execute(postRequest);
 			if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 204) {
-				logger.error("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+				logger.error("Failed : HTTP error code : " + response.getStatusLine().getStatusCode() + ", " + path);
 			}
 			if (response.getEntity() == null || response.getEntity().getContent() == null) {
 				return null;
