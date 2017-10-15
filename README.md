@@ -26,8 +26,8 @@ This library rely on peter-swing library https://github.com/mcheung63/peter-swin
 		
 Please encode the parameter yourself:
 
-There is space in the parameter, so dont just pass it -> jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title&$filter=basetype ne 1&$orderby=title");
+There is space in the parameter, so dont just pass it -> String jsonString = SPOnline.get(token, serverInfo.domain, serverInfo.path + "/_api/web/lists?$select=ID,Title&$filter=basetype eq 1&$orderby=title");
 
 do:
 
-Encode it : jsonString = SPOnline.get(token, domain, "/_api/web/lists?" + URLEncoder.encode("$select=ID,Title&$filter=basetype ne 1&$orderby=title", "utf-8"));
+Encode it : String jsonString = SPOnline.get(token, serverInfo.domain, serverInfo.path + "/_api/web/lists?$select=ID,Title&$filter=" + URLEncoder.encode("basetype eq 1", "utf-8") + "&$orderby=title");
