@@ -239,18 +239,17 @@ public class SPOnline {
 		return null;
 	}
 
-	public static String get(Pair<String, String> token, String domain, String path) {
+	public static String get(Pair<String, String> token, String url) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
-			System.out.println("get=" + "https://" + domain + ".sharepoint.com/" + path);
-			HttpGet getRequest = new HttpGet("https://" + domain + ".sharepoint.com/" + path);
+			HttpGet getRequest = new HttpGet(url);
 			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			getRequest.addHeader("accept", "application/json;odata=verbose");
 			HttpResponse response = httpClient.execute(getRequest);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				return IOUtils.toString(response.getEntity().getContent(), "utf-8");
 			} else {
-				System.err.println("Failed : HTTP error code : " + response.getStatusLine().getStatusCode() + ", " + path);
+				System.err.println("Failed : HTTP error code : " + response.getStatusLine().getStatusCode() + ", " + url);
 				return null;
 			}
 		} catch (ClientProtocolException e) {
@@ -265,6 +264,10 @@ public class SPOnline {
 			}
 		}
 		return null;
+	}
+
+	public static String get(Pair<String, String> token, String domain, String path) {
+		return get(token, "https://" + domain + ".sharepoint.com/" + path);
 	}
 
 	public static String post(Pair<String, String> token, String domain, String path, String data, String formDigestValue) {
