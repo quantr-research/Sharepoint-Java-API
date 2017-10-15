@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ public class TestSPOnline {
 			List<String> lines = IOUtils.readLines(new FileReader(System.getProperty("user.home") + File.separator + "password.txt"));
 			String password = lines.get(0);
 			String domain = "quantr";
-			Pair<String, String> token = SPOnline.login("guest3@quantr.hk", password, domain);
+			Pair<String, String> token = SPOnline.login("guest1@quantr.hk", password, domain);
 			if (token != null) {
 				String jsonString = SPOnline.post(token, domain, "/_api/contextinfo", null, null);
 				System.out.println(CommonLib.prettyFormatJson(jsonString));
@@ -70,13 +71,11 @@ public class TestSPOnline {
 				if (jsonString != null) {
 					System.out.println(CommonLib.prettyFormatJson(jsonString));
 				}
-
 				// get all lists
-				jsonString = SPOnline.get(token, domain, "/_api/web/lists");
+				jsonString = SPOnline.get(token, domain, "/_api/web/lists?" + URLEncoder.encode("$select=ID,Title&$filter=basetype ne 1&$orderby=title", "utf-8"));
 				if (jsonString != null) {
 					System.out.println(CommonLib.prettyFormatJson(jsonString));
 				}
-
 				// get all lists
 				jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title");
 				if (jsonString != null) {

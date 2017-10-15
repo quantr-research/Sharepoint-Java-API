@@ -21,3 +21,13 @@ This library rely on peter-swing library https://github.com/mcheung63/peter-swin
 5. cd Sharepoint-Java-API
 6. mvn clean package
 7. The compiled jar file is in target folder, you can use it in your project now
+
+## Becareful
+		
+Please encode the parameter yourself:
+
+There is space in the parameter, so dont just pass it -> jsonString = SPOnline.get(token, domain, "/_api/web/lists?$select=ID,Title&$filter=basetype ne 1&$orderby=title");
+
+do:
+
+Encode it : jsonString = SPOnline.get(token, domain, "/_api/web/lists?" + URLEncoder.encode("$select=ID,Title&$filter=basetype ne 1&$orderby=title", "utf-8"));

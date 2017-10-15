@@ -13,7 +13,6 @@ import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -243,6 +242,7 @@ public class SPOnline {
 	public static String get(Pair<String, String> token, String domain, String path) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
+			System.out.println("get=" + "https://" + domain + ".sharepoint.com/" + path);
 			HttpGet getRequest = new HttpGet("https://" + domain + ".sharepoint.com/" + path);
 			getRequest.addHeader("Cookie", token.getLeft() + ";" + token.getRight());
 			getRequest.addHeader("accept", "application/json;odata=verbose");
