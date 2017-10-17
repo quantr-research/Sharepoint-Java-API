@@ -239,7 +239,7 @@ public class SPOnline {
 		return null;
 	}
 
-	 public static String get(Pair<String, String> token, String url) {
+	public static String get(Pair<String, String> token, String url) {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		try {
 			HttpGet getRequest = new HttpGet(url);
